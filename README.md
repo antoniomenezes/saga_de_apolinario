@@ -25,4 +25,6 @@ Para executar o jogo basta digitar o seguinte comando:
 - No Linux: python3 saga.py
 - No Windows: python.exe saga.py
 
+### Observações
+Desculpem quaisquer transtornos e bugs durante a execução. É uma versão pouco testada e foi implementada exclusivamente para a imersão IA da Alura. Futuramente, é possível pensar numa versão web.
 
