@@ -15,8 +15,8 @@ Python 3.6+
   Mais informações: https://customtkinter.tomschimansky.com/
   
 - Também é necessário criar uma variável de ambiente GEMINI_API_KEY com a API_KEY:
-  No Linux, pode-se usar o comando export GEMINI_API_KEY=<API_KEY>
-  No Windows, basta criar a variável no painel de controle do Windows.
+  - No Linux, pode-se usar o comando export GEMINI_API_KEY=<API_KEY>
+  - No Windows, basta criar a variável no painel de controle do Windows.
   
 ### Para executar o jogo
 Para executar o jogo basta digitar o seguinte comando: 
