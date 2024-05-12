@@ -1,7 +1,7 @@
 # Saga de Apolinário
 A saga de apolinário é um jogo onde a história é gerada pelo Gemini e o jogador pode escolher como termina
 
-![A Saga de Apolinário](app_logo.png)
+<img src="app_logo.png" alt="A Saga de Apolinário" width="100"/>
 
 ### Requisitos
 
