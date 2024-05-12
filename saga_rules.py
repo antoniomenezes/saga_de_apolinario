@@ -4,7 +4,15 @@ import os
 
 # Criar uma variável de ambiente GEMINI_API_KEY com a API_KEY
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel('gemini-pro')
+
+safety_settings={
+        "HARM_CATEGORY_HATE_SPEECH": "BLOCK_NONE",
+        "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
+        "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_NONE",
+        "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_NONE"
+    }
+
+model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
 #model = genai.GenerativeModel('gemini-1.5-pro')
 #model = genai.GenerativeModel('gemini-1.5-pro-latest')
 
@@ -119,21 +127,8 @@ def run_saga(input_text):
 		output_text += saudacao
 		output_text += apresentacao+"\n"
 		output_text += "\nQual deve ser a escolha de "+protagonista+"?\n"
-		#print(saudacao)
-		#print(apresentacao+"\n")
-		#print("\nQual deve ser a escolha de "+protagonista+"?")
 		for e in range(len(escolhas)):
-			#print(e+1, escolhas[e])
 			output_text += "("+str(e+1)+") "+escolhas[e]+"\n"
-		#escolha = input('\nInforme o número: ')
-		#if escolha.strip() == "":
-		#	exit()
-		#escolha = int(escolha)-1
-		
-		#texto_a_submeter = "\n"+protagonista+" decidiu "+escolhas[escolha]+". O que pode acontecer depois disso? Selecione uma única possibilidade e escreva um parágrafo em forma narrativa sobre o que houve com "+protagonista+", tendo como resultado final que "+escolhas_fase2[escolha]
-		#response = model.generate_content(texto_a_submeter)
-		#print("\n"+response.text)
-		#texto_a_submeter = response.text+" Com o rebaixamento para uma função que não agradou, como a de atendimento direto ao público. Quais possibilidades existiriam para "+protagonista+"? Apresente as 3 melhores possibilidades (sem marcadores) como uma lista de strings em python, no estilo ['string',...,'string']"
 
 	elif fase == 2:
 
@@ -147,36 +142,18 @@ def run_saga(input_text):
 		texto_a_submeter = "\n"+protagonista+" decidiu "+escolha+". O que pode acontecer depois disso? Selecione uma única possibilidade e escreva um parágrafo em forma narrativa sobre o que houve com "+protagonista+", tendo como resultado final que "+escolha2
 		response = model.generate_content(texto_a_submeter)
 		output_text += response.text
-		#print("\n"+response.text)
 		texto_a_submeter = response.text+" Com o rebaixamento para uma função que não agradou, como a de atendimento direto ao público. Quais possibilidades existiriam para "+protagonista+"? Apresente as 3 melhores possibilidades (sem marcadores) como uma lista de strings em python, no estilo ['string',...,'string']"
 
 		# FASE 2 - O chamado à aventura
 		response = model.generate_content(texto_a_submeter)
 		escolhas=eval(response.text.replace("```python","").replace("```",""))
-		print("\nQual deve ser a escolha?")
 		output_text += "\nQual deve ser a escolha?\n"
 		for e in range(len(escolhas)):
-			#print(e+1, escolhas[e])
 			output_text += "("+str(e+1)+") "+escolhas[e]+"\n"
 
-		#escolha = input('\nInforme o número: ')
-		#if escolha.strip() == "":
-		#	exit()
-		#escolha = int(escolha)-1
-
-		#texto = "Ao "+escolhas[escolha]+", ainda assim, houve um ponto de ruptura. A pressão e o estresse acabaram cobrando seu preço, levando a erros e, finalmente, à demissão. Agora, se encontra sem emprego e sem teto, vivendo nas ruas e questionando a ordem que sempre acreditou existir."
-		#texto_a_submeter = "Corrija o seguinte texto: "+texto+" e retorne apenas uma única opção como um parágrafo narrativo"
-		#response = model.generate_content(texto_a_submeter)
-		#texto = response.text.replace("\n"," ")
-		#print("\n"+texto+"\n")
-
-		#texto_a_submeter = texto+" Apresente as 3 melhores possibilidades (sem marcadores), como uma lista de strings em python, no estilo ['string',...,'string']"
-		#response = model.generate_content(texto_a_submeter)
-		#texto_a_submeter = response.text
-
 	elif fase == 3:
-		escolha = formatar_escolha(input_text, escolhas)
 
+		escolha = formatar_escolha(input_text, escolhas)
 		texto = "Ao "+escolha+", ocorreu um ponto de ruptura. A pressão e o estresse acabaram cobrando seu preço, todos os erros levaram à demissão. Agora, é viver sem emprego e sem teto (pois não conseguiu pagar seu aluguel), vivendo nas ruas e questionando a ordem que sempre acreditou existir."
 		texto_a_submeter = "Corrija o seguinte texto: "+texto+" e retorne apenas uma única opção como um parágrafo narrativo"
 		response = model.generate_content(texto_a_submeter)
@@ -189,99 +166,56 @@ def run_saga(input_text):
 
 		escolhas=eval(texto_a_submeter) #.replace("```python","").replace("```",""))
 		output_text += "\nQual deve ser a escolha?\n"
-		#print("\nQual deve ser a escolha?")
 		for e in range(len(escolhas)):
-			#print(e+1, escolhas[e])
 			output_text += "("+str(e+1)+") "+escolhas[e]+"\n"
 		
 	elif fase == 4:
 
 		escolha = formatar_escolha(input_text, escolhas)
-		#escolha = input('\nInforme o número: ')
-		#if escolha.strip() == "":
-		#	exit()
-		#escolha = int(escolha)-1
 		texto = "Enquanto "+protagonista+" escolhia "+escolha+", descobriu uma notícia alarmante vinda de uma TV em uma loja de eletrônicos: "+tipo_de_desafio+". Isso lhe desencadeou grande desespero, ao mesmo tempo que surgiu uma esperança ao lembrar de "+tipo_de_mentor
 		texto_a_submeter = "Corrija o seguinte texto: "+texto+" e retorne apenas uma única opção como um parágrafo narrativo"
 		response = model.generate_content(texto_a_submeter)
 		texto = response.text.replace("\n"," ")
 		output_text += "\n"+texto+"\n"
-		#print("\n"+texto+"\n")
-
-		#texto_a_submeter ="Descreva em um único parágrafo sobre a conversa entre "+protagonista+" e "+tipo_de_mentor
-		#response = model.generate_content(texto_a_submeter)
-		#texto = response.text.replace("\n"," ")
-		#output_text += "\n"+texto+"\n"
-		#print("\n"+texto+"\n")
-
-		#texto = "Enquanto "+protagonista+" escolhia "+escolhas[escolha]+", descobriu uma notícia alarmante vinda de uma TV em uma loja de eletrônicos: "+tipo_de_desafio+". Isso lhe desencadeou grande desespero, ao mesmo tempo que surgiu uma esperança ao lembrar de uma conversa com "+tipo_de_mentor+". Descreva em forma narrativa em um único parágrafo sobre essa conversa."
-		#texto_a_submeter = "Corrija o seguinte texto: "+texto_a_submeter+" e retorne apenas uma única opção como um parágrafo narrativo"
-		#response = model.generate_content(texto_a_submeter)
-		#texto = response.text.replace("\n"," ")
-		#print("\n"+texto+"\n")
 
 		texto = protagonista+" imaginou então que com a ajuda do "+tipo_de_mentor+" haveria uma solução e saiu em sua procura"		
 		texto_a_submeter = "Corrija o seguinte texto: "+texto+" e retorne apenas uma única opção como uma frase narrativa"
 		response = model.generate_content(texto_a_submeter)
 		texto = response.text.replace("\n"," ")
 		output_text += "\n"+texto+"\n"
-		#print("\n"+texto+"\n")
 
 		texto_a_submeter = protagonista+" encontrou "+tipo_de_mentor+", e perguntou qual o plano para vencer "+tipo_de_desafio+". Descreva a conversa em um parágrafo"
 		response = model.generate_content(texto_a_submeter)
 		texto = response.text.replace("\n"," ")
 		output_text += "\n"+texto+"\n"
-		#print("\n"+response.text.replace("\n"," "))
 
 		texto = "Num momento de dúvida, "+protagonista+" teme em seguir o plano de "+tipo_de_mentor
 		texto_a_submeter = "Esboçar um parágrafo narrativo para: "+texto		
 		response = model.generate_content(texto_a_submeter)
 		texto = response.text.replace("\n"," ")
 		output_text += "\n"+texto+"\n"
-		#print("\n"+response.text.replace("\n"," "))
 
 		texto_a_submeter = "Apresente duas possibilidades (sem marcadores) para dizer SIM ou NÃO ao plano de "+tipo_de_mentor+", como uma lista de strings sem marcadores, no estilo ['string',...,'string']"
 		response = model.generate_content(texto_a_submeter)
 		escolhas=eval(response.text) #.replace("```python","").replace("```",""))
 
 		output_text += "\nQual deve ser a escolha?\n"
-		#print("\nQual deve ser a escolha?")
 		for e in range(len(escolhas)):
-			#print(e+1, escolhas[e])
 			output_text += "("+str(e+1)+") "+escolhas[e]+"\n"
-
-		#print("-------")
-		#print(response.text)
-		#print("-------")
 
 	elif fase == 5:
 
 		# FASE 5
 		escolha = formatar_escolha(input_text, escolhas)
 
-		#escolhas=eval(response.text) #.replace("```python","").replace("```",""))
-		#print("\nQual deve ser a escolha?")
-		#for e in range(len(escolhas)):
-		#	print(e+1, escolhas[e])
-		#escolha = input('\nInforme o número: ')
-		#if escolha.strip() == "":
-		#	exit()
-		#escolha = int(escolha)-1
-
-		texto_a_submeter = "Como "+protagonista+" resolveu "+escolha+", o plano para evitar "+tipo_de_desafio+" e suceder "+tipo_de_reinicio+" terá um desfecho. Elabore o final da história."
+		texto_a_submeter = "Como "+protagonista+" resolveu "+escolha+", o plano de "+tipo_de_mentor+" para evitar "+tipo_de_desafio+" e suceder "+tipo_de_reinicio+" terá um desfecho. Elabore o final da história."
 		response = model.generate_content(texto_a_submeter)
 		texto = response.text.replace("\n"," ")
 		output_text += "\n"+texto+"\n"
 		output_text +="\n\n--- FIM ---\n\n\n"
 
-		#print("\n"+response.text.replace("\n"," "))
-		#print("\n\n --- FIM ---\n\n\n")
 		inicializacao_do_mundo()
 		fase = 0
 
 	fase = fase + 1
 	return output_text
-
-#while True:
-	#run_saga()
-
