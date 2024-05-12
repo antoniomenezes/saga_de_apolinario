@@ -184,7 +184,7 @@ def run_saga(input_text):
 		texto = response.text.replace("\n"," ")
 		output_text += "\n"+texto+"\n"
 
-		texto_a_submeter = protagonista+" encontrou "+tipo_de_mentor+", e perguntou qual o plano para vencer "+tipo_de_desafio+". Descreva a conversa em um parágrafo"
+		texto_a_submeter = protagonista+" encontrou "+tipo_de_mentor+", e perguntou qual o plano para vencer "+tipo_de_desafio+". Descreva o plano em um parágrafo"
 		response = model.generate_content(texto_a_submeter)
 		texto = response.text.replace("\n"," ")
 		output_text += "\n"+texto+"\n"
