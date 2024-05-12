@@ -2,9 +2,6 @@
 A saga de apolinário é um jogo onde a história é gerada pelo Gemini e o jogador pode escolher como termina
 <img src="app_logo.png" alt="A Saga de Apolinário"> 
 
-### Screenshot
-<img src="screenshot.png" alt="Screenshot do jogo no Linux"> 
-
 ### Requisitos
 
 Python 3.6+
@@ -27,4 +24,8 @@ Para executar o jogo basta digitar o seguinte comando:
 
 ### Observações
 Desculpem quaisquer transtornos e bugs durante a execução. É uma versão pouco testada e foi implementada exclusivamente para a imersão IA da Alura. Futuramente, é possível pensar numa versão web.
+
+### Screenshots
+<img src="screenshot.png" alt="Screenshot do jogo no Linux"> 
+<img src="screenshot2.png" alt="Screenshot de uma outra história"> 
 
