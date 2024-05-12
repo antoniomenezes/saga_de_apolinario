@@ -9,8 +9,8 @@ Python 3.6+
 
 É preciso instalar as seguintes bibliotecas em python:
 - Biblioteca CustomTkinter (UI) e tkinter-tooltip:
-  pip install customtkinter
-  pip install tkinter-tooltip
+  - pip install customtkinter
+  - pip install tkinter-tooltip
  
   Mais informações: https://customtkinter.tomschimansky.com/
   
